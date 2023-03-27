@@ -1,0 +1,27 @@
+{
+  "testEnvironment": "jsdom",
+  "testMatch": ["**/unit/**/*test.js?(x)"],
+    "collectCoverageFrom": [
+    "src/components/**/*.js?(x)",
+    "!src/components/main.jsx"
+  ],
+  "setupFilesAfterEnv": ["<rootDir>/test/unit/setup-test-framework-script.js"],
+  "coverageDirectory": "reports/coverage",
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "moduleDirectories": [
+    "node_modules",
+    "src",
+    "test/unit"
+  ],
+  "moduleNameMapper": {
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/unit/fileMock.js",
+    "\\.(css|scss)$": "<rootDir>/test/unit/styleMock.js"
+  }
+}
