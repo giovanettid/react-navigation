@@ -1,4 +1,4 @@
-## React + Webpack + Npm scripts starter
+## Maps and navigation
 
 ## Dependencies
 * sources

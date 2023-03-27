@@ -24,6 +24,7 @@ build/
 
 # IDE
 .idea
+*.iml
 
 # macOS files
 **/.DS_Store
