@@ -1,0 +1,30 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Reports directory
+reports
+
+
+# Dependency directories
+node_modules/
+
+# Build directories
+build/
+
+# Optional npm cache directory
+.npm
+
+# IDE
+.idea
+*.iml
+
+# macOS files
+**/.DS_Store
