@@ -1,11 +1,1 @@
-
-@font-face {
-  font-family: hill-house;
-  font-style: normal;
-  font-weight: 500;
-  src: url('../fonts/Hill_House.otf') format('opentype');
-}
-
-html {
-  font-family: hill-house, sans-serif;
-}
+@import '~leaflet/dist/leaflet.css';
