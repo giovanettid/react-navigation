@@ -9,7 +9,9 @@ describe('Application', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Marker' }));
 
-    const popup = await screen.findByText('A pretty CSS3 popup', { exact: false });
+    const popup = await screen.findByText('A pretty CSS3 popup', {
+      exact: false,
+    });
     expect(popup).toBeInTheDocument();
   });
 });

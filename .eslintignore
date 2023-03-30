@@ -1,8 +1,8 @@
-/build/**
-/reports/**
-/node_modules/**
-/docs/**
-/jsdoc/**
-/templates/**
-/.idea/**
-/tmp/**
+/build
+/reports
+node_modules
+docs
+jsdoc
+templates
+.idea
+tmp

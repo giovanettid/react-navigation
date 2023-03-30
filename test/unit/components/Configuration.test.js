@@ -13,11 +13,15 @@ describe('Configuration', () => {
     });
 
     it('property urlTilesTemplate is public openstreetmap template', () => {
-      expect(configuration.urlTilesTemplate).toBe('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+      expect(configuration.urlTilesTemplate).toBe(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      );
     });
 
     it('property attribution is openstreetmap copyright', () => {
-      expect(configuration.attribution).toBe('&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+      expect(configuration.attribution).toBe(
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      );
     });
   });
 });

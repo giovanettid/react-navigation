@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ['plugin:jest/recommended', 'plugin:testing-library/react', 'plugin:jest-dom/recommended'],
+  extends: [
+    'plugin:jest/recommended',
+    'plugin:testing-library/react',
+    'plugin:jest-dom/recommended',
+  ],
   globals: {
     describe: false,
     it: false,

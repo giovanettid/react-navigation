@@ -1,13 +1,19 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:react-hooks/recommended', 'plugin:jsx-a11y/recommended'],
+  extends: [
+    'airbnb',
+    'plugin:react-hooks/recommended',
+    'plugin:jsx-a11y/recommended',
+    'prettier',
+  ],
   globals: {
     document: false,
   },
   rules: {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+    'prettier/prettier': 'error',
   },
-  plugins: ['react-hooks', 'jsx-a11y'],
+  plugins: ['react-hooks', 'jsx-a11y', 'prettier'],
   parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaFeatures: {

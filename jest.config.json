@@ -1,7 +1,7 @@
 {
   "testEnvironment": "jsdom",
   "testMatch": ["**/unit/**/*test.js?(x)"],
-    "collectCoverageFrom": [
+  "collectCoverageFrom": [
     "src/components/**/*.js?(x)",
     "!src/components/main.jsx"
   ],
@@ -15,11 +15,7 @@
       "statements": 100
     }
   },
-  "moduleDirectories": [
-    "node_modules",
-    "src",
-    "test/unit"
-  ],
+  "moduleDirectories": ["node_modules", "src", "test/unit"],
   "moduleNameMapper": {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/unit/fileMock.js",
     "\\.(css|scss)$": "<rootDir>/test/unit/styleMock.js"
