@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-run-p lint coverage
+npx lint-staged --concurrent false
+npm run coverage

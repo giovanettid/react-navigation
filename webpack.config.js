@@ -23,27 +23,32 @@ const config = {
     rules: [
       {
         test: /\.(scss|css)$/,
-        use: [{
-          loader: MiniCssExtractPlugin.loader,
-        }, {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
           },
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true,
-          },
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-            sassOptions: {
-              includePaths: [path.resolve(__dirname, stylesDir)],
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
             },
           },
-        }],
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, stylesDir)],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(js|jsx)$/,
@@ -51,11 +56,17 @@ const config = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [['@babel/env', {
-              useBuiltIns: 'usage',
-              corejs: 3,
-              debug: true,
-            }], '@babel/react'],
+            presets: [
+              [
+                '@babel/env',
+                {
+                  useBuiltIns: 'usage',
+                  corejs: 3,
+                  debug: true,
+                },
+              ],
+              '@babel/react',
+            ],
           },
         },
       },
@@ -99,9 +110,11 @@ const config = {
 };
 
 if (devMode) {
-  config.plugins.push(new webpack.SourceMapDevToolPlugin({
-    filename: '[file].map',
-  }));
+  config.plugins.push(
+    new webpack.SourceMapDevToolPlugin({
+      filename: '[file].map',
+    })
+  );
 }
 
 module.exports = config;

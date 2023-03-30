@@ -7,7 +7,6 @@ const { removeSync } = require('fs-extra');
 const reportsDir = 'reports/e2e';
 
 exports.config = {
-
   //
   // ==================
   // Specify Test Files
@@ -17,9 +16,7 @@ exports.config = {
   // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
-  specs: [
-    './test/e2e/features/**/*.feature',
-  ],
+  specs: ['./test/e2e/features/**/*.feature'],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -46,18 +43,20 @@ exports.config = {
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://docs.saucelabs.com/reference/platforms-configurator
   //
-  capabilities: [{
-    // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-    // grid with only 5 firefox instances available you can make sure that not more than
-    // 5 instances get started at a time.
-    maxInstances: 5,
-    //
-    browserName: 'chrome',
-    // If outputDir is provided WebdriverIO can capture driver session logs
-    // it is possible to configure which logTypes to include/exclude.
-    // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
-    // excludeDriverLogs: ['bugreport', 'server'],
-  }],
+  capabilities: [
+    {
+      // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+      // grid with only 5 firefox instances available you can make sure that not more than
+      // 5 instances get started at a time.
+      maxInstances: 5,
+      //
+      browserName: 'chrome',
+      // If outputDir is provided WebdriverIO can capture driver session logs
+      // it is possible to configure which logTypes to include/exclude.
+      // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+      // excludeDriverLogs: ['bugreport', 'server'],
+    },
+  ],
   //
   // ===================
   // Test Configurations
@@ -126,9 +125,12 @@ exports.config = {
   // see also: https://webdriver.io/docs/dot-reporter.html
   reporters: [
     'spec',
-    ['cucumberjs-json', {
-      jsonFolder: `./${reportsDir}/json`,
-    }],
+    [
+      'cucumberjs-json',
+      {
+        jsonFolder: `./${reportsDir}/json`,
+      },
+    ],
   ],
 
   // If you are using Cucumber you need to specify the location of your step definitions.
@@ -286,7 +288,9 @@ exports.config = {
   // },
   afterStep(uri, feature, { passed }) {
     if (!passed) {
-      browser.saveScreenshot(`./${this.screenshotPath}/screenshot-${uuidv4()}.png`);
+      browser.saveScreenshot(
+        `./${this.screenshotPath}/screenshot-${uuidv4()}.png`
+      );
     }
   },
   // afterScenario: function (uri, feature, scenario, result, sourceLocation) {
