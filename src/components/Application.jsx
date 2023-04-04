@@ -1,26 +1,35 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import 'components/Application.scss';
-import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet-defaulticon-compatibility';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { useState } from 'react';
+
+import RoutingControl from './RoutingControl';
+
+import './Application.scss';
 
 function Application({ configuration }) {
   const [state] = useState(configuration());
 
-  const { center, initialZoom, urlTilesTemplate, attribution } = state;
+  const {
+    center,
+    initialZoom,
+    renderer,
+    urlTilesTemplate,
+    attribution,
+    routingServiceUrl,
+    end,
+  } = state;
 
   return (
-    <MapContainer center={center} zoom={initialZoom} scrollWheelZoom={false}>
+    <MapContainer
+      center={center}
+      zoom={initialZoom}
+      scrollWheelZoom={false}
+      renderer={renderer}
+    >
       <TileLayer url={urlTilesTemplate} attribution={attribution} />
-      <Marker position={center}>
-        <Popup>
-          A pretty CSS3 popup.
-          <br />
-          Easily customizable.
-        </Popup>
-      </Marker>
+      <RoutingControl serviceUrl={routingServiceUrl} start={center} end={end} />
     </MapContainer>
   );
 }

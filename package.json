@@ -26,6 +26,7 @@
   "author": "Didier Giovanetti",
   "license": "MIT",
   "dependencies": {
+    "@react-leaflet/core": "^2.1.0",
     "core-js": "^3.29.1",
     "leaflet": "^1.9.3",
     "leaflet-defaulticon-compatibility": "^0.1.1",

@@ -1,3 +1,5 @@
+import L from 'leaflet';
+
 import Configuration from 'components/Configuration';
 
 describe('Configuration', () => {
@@ -5,11 +7,15 @@ describe('Configuration', () => {
 
   describe('new instance', () => {
     it('property center to be Paris latitude, longitude', () => {
-      expect(configuration.center).toEqual([48.856, 2.352]);
+      expect(configuration.center).toEqual({ lat: 48.856, lng: 2.352 });
     });
 
     it('property initialZoom is 13', () => {
       expect(configuration.initialZoom).toBe(13);
+    });
+
+    it('property renderer is instance of SVG renderer', () => {
+      expect(configuration.renderer).toBeInstanceOf(L.SVG);
     });
 
     it('property urlTilesTemplate is public openstreetmap template', () => {
@@ -22,6 +28,16 @@ describe('Configuration', () => {
       expect(configuration.attribution).toBe(
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       );
+    });
+
+    it('property routingServiceUrl to be osrm url', () => {
+      expect(configuration.routingServiceUrl).toBe(
+        'https://router.project-osrm.org/route/v1'
+      );
+    });
+
+    it('property end to be latitude, longitude near Paris center', () => {
+      expect(configuration.end).toEqual({ lat: 48.836, lng: 2.342 });
     });
   });
 });

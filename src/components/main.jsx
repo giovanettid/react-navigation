@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
-import Application from 'components/Application';
-import Configuration from 'components/Configuration';
+
+import Application from './Application';
+import Configuration from './Configuration';
 
 import 'styles/main.scss';
 

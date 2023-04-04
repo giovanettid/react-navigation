@@ -1,17 +1,60 @@
+import { render, screen } from '@testing-library/react';
+
 import Application from 'components/Application';
 import Configuration from 'components/Configuration';
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import * as routingResponse from './routing-response.json';
 
 describe('Application', () => {
-  it('should display popup when click marker', async () => {
-    render(<Application configuration={() => ({ ...new Configuration() })} />);
+  let server;
+  const setup = () => {
+    const configuration = new Configuration();
+    configuration.routingServiceUrl = 'http://localhost';
+    configuration.urlTilesTemplate = 'https://{s}.localhost/{z}/{x}/{y}.png';
 
-    fireEvent.click(screen.getByRole('button', { name: 'Marker' }));
+    const utils = render(
+      <Application configuration={() => ({ ...configuration })} />
+    );
 
-    const popup = await screen.findByText('A pretty CSS3 popup', {
-      exact: false,
-    });
-    expect(popup).toBeInTheDocument();
+    return {
+      ...utils,
+    };
+  };
+
+  beforeEach(() => {
+    server = sinon.fakeServer.create();
+    server.respondImmediately = true;
+
+    server.respondWith('GET', /\/driving\//, [
+      200,
+      { 'content-Type': 'application/json' },
+      JSON.stringify(routingResponse),
+    ]);
+  });
+
+  afterEach(() => {
+    server.restore();
+    sinon.restore();
+  });
+
+  it('should display zoom', () => {
+    setup();
+
+    expect(screen.getByTitle('Zoom in')).toBeInTheDocument();
+    expect(screen.getByTitle('Zoom out')).toBeInTheDocument();
+  });
+
+  it('should display attribution layer', () => {
+    setup();
+
+    expect(screen.getByText('OpenStreetMap')).toBeInTheDocument();
+  });
+
+  it('should display 2 way point markers', () => {
+    setup();
+
+    expect(screen.getAllByAltText('way point', { exact: false })).toHaveLength(
+      2
+    );
   });
 });
