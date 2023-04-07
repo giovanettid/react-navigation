@@ -1,7 +1,7 @@
 import L from 'leaflet';
 
-import MapConfiguration from 'components/MapConfiguration';
-import MapEnvironment from 'components/MapEnvironment';
+import MapConfiguration from 'components/Map/MapConfiguration';
+import MapEnvironment from 'components/Map/MapEnvironment';
 
 describe('MapConfiguration', () => {
   const configuration = new MapConfiguration();

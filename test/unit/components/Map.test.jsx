@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import Map from 'components/Map';
-import MapConfiguration from 'components/MapConfiguration';
+import Map from 'components/Map/Map';
+import MapConfiguration from 'components/Map/MapConfiguration';
 
 import * as routingResponse from './fakes/routing-response.json';
 import * as searchStartResponse from './fakes/search-start-response.json';

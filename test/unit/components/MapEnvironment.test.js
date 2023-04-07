@@ -1,4 +1,4 @@
-import MapEnvironment from 'components/MapEnvironment';
+import MapEnvironment from 'components/Map/MapEnvironment';
 
 describe('MapEnvironment', () => {
   const environment = new MapEnvironment();
