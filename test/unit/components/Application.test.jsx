@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Application from 'components/Application';
-import Configuration from 'components/Configuration';
+import MapConfiguration from 'components/MapConfiguration';
 
 import * as routingResponse from './fakes/routing-response.json';
 import * as searchStartResponse from './fakes/search-start-response.json';
@@ -35,7 +35,7 @@ describe('Application', () => {
   };
 
   const setup = () => {
-    const configuration = new Configuration();
+    const configuration = new MapConfiguration();
     configuration.routingServiceUrl = 'http://localhost';
     configuration.geocodingServiceUrl = 'http://localhost';
     configuration.urlTilesTemplate = 'https://{s}.localhost/{z}/{x}/{y}.png';

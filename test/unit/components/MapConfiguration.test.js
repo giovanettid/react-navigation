@@ -1,9 +1,9 @@
 import L from 'leaflet';
 
-import Configuration from 'components/Configuration';
+import MapConfiguration from 'components/MapConfiguration';
 
-describe('Configuration', () => {
-  const configuration = new Configuration();
+describe('MapConfiguration', () => {
+  const configuration = new MapConfiguration();
 
   describe('new instance', () => {
     it('property center to be Paris latitude, longitude', () => {

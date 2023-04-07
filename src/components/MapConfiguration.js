@@ -1,6 +1,6 @@
 import L from 'leaflet';
 
-export default class Configuration {
+export default class MapConfiguration {
   constructor() {
     this.center = L.latLng(48.856, 2.352);
     this.initialZoom = 13;
