@@ -1,12 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import Map from 'components/Map/Map';
 import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
+import Map from 'components/Map/Map';
 
 import * as routingResponse from './fakes/routing-response.json';
-import * as searchStartResponse from './fakes/search-start-response.json';
 import * as searchEndResponse from './fakes/search-end-response.json';
+import * as searchStartResponse from './fakes/search-start-response.json';
 
 describe('Map', () => {
   let server;
