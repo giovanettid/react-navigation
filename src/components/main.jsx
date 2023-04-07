@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 
 import Map from 'components/Map/Map';
-import MapConfiguration from 'components/Map/MapConfiguration';
+import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
 
 import 'styles/main.scss';
 
