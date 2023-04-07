@@ -1,0 +1,28 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [2.56, 48.02],
+        "type": "Point"
+      },
+      "type": "Feature",
+      "properties": {
+        "osm_id": 697177847,
+        "country": "France",
+        "city": "Paris",
+        "countrycode": "FR",
+        "postcode": "75004",
+        "locality": "Quartier Saint-Merri",
+        "type": "house",
+        "osm_type": "N",
+        "osm_key": "place",
+        "housenumber": "94",
+        "street": "Quai de l'Hôtel de Ville",
+        "district": "Le Marais",
+        "osm_value": "house",
+        "state": "Île-de-France"
+      }
+    }
+  ],
+  "type": "FeatureCollection"
+}
