@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet-defaulticon-compatibility';
 
-import RoutingControl from './RoutingControl';
+import RoutingControl from 'components/RoutingControl/RoutingControl';
 
 import './Map.scss';
 

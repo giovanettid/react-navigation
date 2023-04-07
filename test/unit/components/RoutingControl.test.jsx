@@ -3,7 +3,7 @@ import { MapContainer } from 'react-leaflet';
 
 import { render, screen, waitFor } from '@testing-library/react';
 
-import RoutingControl from 'components/RoutingControl';
+import RoutingControl from 'components/RoutingControl/RoutingControl';
 
 import * as routingResponse from './fakes/routing-response.json';
 import * as reverseStartResponse from './fakes/reverse-start-response.json';
