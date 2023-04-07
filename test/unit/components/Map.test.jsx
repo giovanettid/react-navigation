@@ -36,9 +36,10 @@ describe('Map', () => {
 
   const setup = () => {
     const configuration = new MapConfiguration();
-    configuration.routingServiceUrl = 'http://localhost';
-    configuration.geocodingServiceUrl = 'http://localhost';
-    configuration.urlTilesTemplate = 'https://{s}.localhost/{z}/{x}/{y}.png';
+    configuration.environment.routingServiceUrl = 'http://localhost';
+    configuration.environment.geocodingServiceUrl = 'http://localhost';
+    configuration.environment.urlTilesTemplate =
+      'https://{s}.localhost/{z}/{x}/{y}.png';
 
     setupFakeServer();
 

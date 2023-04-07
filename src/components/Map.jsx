@@ -11,15 +11,7 @@ import './Map.scss';
 function Map({ configuration }) {
   const [state] = useState(configuration());
 
-  const {
-    center,
-    initialZoom,
-    renderer,
-    urlTilesTemplate,
-    attribution,
-    routingServiceUrl,
-    geocodingServiceUrl,
-  } = state;
+  const { center, initialZoom, renderer, environment } = state;
 
   return (
     <MapContainer
@@ -28,10 +20,13 @@ function Map({ configuration }) {
       scrollWheelZoom={false}
       renderer={renderer}
     >
-      <TileLayer url={urlTilesTemplate} attribution={attribution} />
+      <TileLayer
+        url={environment.urlTilesTemplate}
+        attribution={environment.attribution}
+      />
       <RoutingControl
-        routingServiceUrl={routingServiceUrl}
-        geocodingServiceUrl={geocodingServiceUrl}
+        routingServiceUrl={environment.routingServiceUrl}
+        geocodingServiceUrl={environment.geocodingServiceUrl}
       />
     </MapContainer>
   );

@@ -1,6 +1,7 @@
 import L from 'leaflet';
 
 import MapConfiguration from 'components/MapConfiguration';
+import MapEnvironment from 'components/MapEnvironment';
 
 describe('MapConfiguration', () => {
   const configuration = new MapConfiguration();
@@ -18,28 +19,8 @@ describe('MapConfiguration', () => {
       expect(configuration.renderer).toBeInstanceOf(L.SVG);
     });
 
-    it('property urlTilesTemplate is public openstreetmap template', () => {
-      expect(configuration.urlTilesTemplate).toBe(
-        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-      );
-    });
-
-    it('property attribution is openstreetmap copyright', () => {
-      expect(configuration.attribution).toBe(
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      );
-    });
-
-    it('property routingServiceUrl to be osrm url', () => {
-      expect(configuration.routingServiceUrl).toBe(
-        'https://router.project-osrm.org/route/v1'
-      );
-    });
-
-    it('property geocodingServiceUrl to be photon url', () => {
-      expect(configuration.geocodingServiceUrl).toBe(
-        'https://photon.komoot.io'
-      );
+    it('property environment is instance of MapEnvironment', () => {
+      expect(configuration.environment).toBeInstanceOf(MapEnvironment);
     });
   });
 });
