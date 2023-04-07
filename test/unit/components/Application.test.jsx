@@ -4,9 +4,9 @@ import userEvent from '@testing-library/user-event';
 import Application from 'components/Application';
 import Configuration from 'components/Configuration';
 
-import * as routingResponse from './routing-response.json';
-import * as searchStartResponse from './search-start-response.json';
-import * as searchEndResponse from './search-end-response.json';
+import * as routingResponse from './fakes/routing-response.json';
+import * as searchStartResponse from './fakes/search-start-response.json';
+import * as searchEndResponse from './fakes/search-end-response.json';
 
 describe('Application', () => {
   let server;

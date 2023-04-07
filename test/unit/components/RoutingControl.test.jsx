@@ -5,9 +5,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 
 import RoutingControl from 'components/RoutingControl';
 
-import * as routingResponse from './routing-response.json';
-import * as reverseStartResponse from './reverse-start-response.json';
-import * as reverseEndResponse from './reverse-end-response.json';
+import * as routingResponse from './fakes/routing-response.json';
+import * as reverseStartResponse from './fakes/reverse-start-response.json';
+import * as reverseEndResponse from './fakes/reverse-end-response.json';
 
 describe('RoutingControl', () => {
   let server;
