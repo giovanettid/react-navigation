@@ -10,25 +10,8 @@ import * as searchEndResponse from './search-end-response.json';
 
 describe('Application', () => {
   let server;
-  const setup = () => {
-    const configuration = new Configuration();
-    configuration.routingServiceUrl = 'http://localhost';
-    configuration.geocodingServiceUrl = 'http://localhost';
-    configuration.urlTilesTemplate = 'https://{s}.localhost/{z}/{x}/{y}.png';
 
-    const user = userEvent.setup();
-    const utils = render(
-      <Application configuration={() => ({ ...configuration })} />
-    );
-
-    return {
-      ...utils,
-      user,
-    };
-  };
-
-  beforeEach(() => {
-    document.body.innerHTML = '';
+  const setupFakeServer = () => {
     server = sinon.fakeServer.create();
     server.respondImmediately = true;
 
@@ -49,7 +32,28 @@ describe('Application', () => {
       { 'content-Type': 'application/json' },
       JSON.stringify(searchEndResponse),
     ]);
-  });
+  };
+
+  const setup = () => {
+    const configuration = new Configuration();
+    configuration.routingServiceUrl = 'http://localhost';
+    configuration.geocodingServiceUrl = 'http://localhost';
+    configuration.urlTilesTemplate = 'https://{s}.localhost/{z}/{x}/{y}.png';
+
+    setupFakeServer();
+
+    document.body.innerHTML = '';
+
+    const user = userEvent.setup();
+    const utils = render(
+      <Application configuration={() => ({ ...configuration })} />
+    );
+
+    return {
+      ...utils,
+      user,
+    };
+  };
 
   afterEach(() => {
     server.restore();

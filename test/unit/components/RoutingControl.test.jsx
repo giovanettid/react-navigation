@@ -12,24 +12,7 @@ import * as reverseEndResponse from './reverse-end-response.json';
 describe('RoutingControl', () => {
   let server;
 
-  const setup = (waypoints) => {
-    const utils = render(
-      <MapContainer center={[48.01, 2.55]} zoom={13} renderer={new L.SVG()}>
-        <RoutingControl
-          routingServiceUrl="http://localhost"
-          geocodingServiceUrl="http://localhost"
-          waypoints={waypoints}
-        />
-      </MapContainer>
-    );
-
-    return {
-      ...utils,
-    };
-  };
-
-  beforeEach(() => {
-    document.body.innerHTML = '';
+  const setupFakeServer = () => {
     server = sinon.fakeServer.create();
 
     server.respondWith('GET', /\/driving\//, [
@@ -49,7 +32,27 @@ describe('RoutingControl', () => {
       { 'content-Type': 'application/json' },
       JSON.stringify(reverseEndResponse),
     ]);
-  });
+  };
+
+  const setup = (waypoints) => {
+    setupFakeServer();
+
+    document.body.innerHTML = '';
+
+    const utils = render(
+      <MapContainer center={[48.01, 2.55]} zoom={13} renderer={new L.SVG()}>
+        <RoutingControl
+          routingServiceUrl="http://localhost"
+          geocodingServiceUrl="http://localhost"
+          waypoints={waypoints}
+        />
+      </MapContainer>
+    );
+
+    return {
+      ...utils,
+    };
+  };
 
   afterEach(() => {
     server.restore();
