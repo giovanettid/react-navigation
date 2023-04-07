@@ -1,14 +1,14 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import Application from 'components/Application';
+import Map from 'components/Map';
 import MapConfiguration from 'components/MapConfiguration';
 
 import * as routingResponse from './fakes/routing-response.json';
 import * as searchStartResponse from './fakes/search-start-response.json';
 import * as searchEndResponse from './fakes/search-end-response.json';
 
-describe('Application', () => {
+describe('Map', () => {
   let server;
 
   const setupFakeServer = () => {
@@ -45,9 +45,7 @@ describe('Application', () => {
     document.body.innerHTML = '';
 
     const user = userEvent.setup();
-    const utils = render(
-      <Application configuration={() => ({ ...configuration })} />
-    );
+    const utils = render(<Map configuration={() => ({ ...configuration })} />);
 
     return {
       ...utils,

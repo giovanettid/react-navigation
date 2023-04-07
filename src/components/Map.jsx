@@ -6,9 +6,9 @@ import 'leaflet-defaulticon-compatibility';
 
 import RoutingControl from './RoutingControl';
 
-import './Application.scss';
+import './Map.scss';
 
-function Application({ configuration }) {
+function Map({ configuration }) {
   const [state] = useState(configuration());
 
   const {
@@ -37,8 +37,8 @@ function Application({ configuration }) {
   );
 }
 
-Application.propTypes = {
+Map.propTypes = {
   configuration: PropTypes.func.isRequired,
 };
 
-export default Application;
+export default Map;
