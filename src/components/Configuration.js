@@ -12,6 +12,6 @@ export default class Configuration {
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
     this.routingServiceUrl = 'https://router.project-osrm.org/route/v1';
-    this.end = L.latLng(48.836, 2.342);
+    this.geocodingServiceUrl = 'https://photon.komoot.io';
   }
 }

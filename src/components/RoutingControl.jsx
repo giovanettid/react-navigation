@@ -1,16 +1,29 @@
 import L from 'leaflet';
-import { createControlComponent } from '@react-leaflet/core';
 import 'leaflet-routing-machine';
+import 'leaflet-control-geocoder';
 
-const createRoutineMachineControl = ({ serviceUrl, start, end }) => {
+import { createControlComponent } from '@react-leaflet/core';
+
+const createRoutineMachineControl = ({
+  routingServiceUrl,
+  geocodingServiceUrl,
+  waypoints,
+}) => {
   const createMarker = (i, waypoint) =>
     L.marker(waypoint.latLng, {
       alt: `${i === 0 ? 'start' : 'end'} way point`,
     });
 
+  const geocoder = L.Control.Geocoder.photon({
+    serviceUrl: `${geocodingServiceUrl}/api/`,
+    reverseUrl: `${geocodingServiceUrl}/reverse/`,
+  });
+
   return L.Routing.control({
-    serviceUrl,
-    plan: L.Routing.plan([start, end], { createMarker }),
+    serviceUrl: routingServiceUrl,
+    waypoints,
+    geocoder,
+    createMarker,
   });
 };
 

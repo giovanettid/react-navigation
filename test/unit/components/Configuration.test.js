@@ -36,8 +36,10 @@ describe('Configuration', () => {
       );
     });
 
-    it('property end to be latitude, longitude near Paris center', () => {
-      expect(configuration.end).toEqual({ lat: 48.836, lng: 2.342 });
+    it('property geocodingServiceUrl to be photon url', () => {
+      expect(configuration.geocodingServiceUrl).toBe(
+        'https://photon.komoot.io'
+      );
     });
   });
 });

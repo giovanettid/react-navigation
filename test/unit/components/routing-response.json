@@ -131,6 +131,98 @@
       "weight": 582.6,
       "duration": 572.5,
       "distance": 3416.3
+    },
+    {
+      "legs": [
+        {
+          "steps": [
+            {
+              "geometry": "_ceiHgijM`@{AP_@DIRc@La@@EBKFYDQb@_BdB}F@IFQJ]`@sANm@|@kDFW`A}DBIFS",
+              "maneuver": {
+                "bearing_after": 120,
+                "bearing_before": 0,
+                "location": [2.351723, 48.855679],
+                "modifier": "left",
+                "type": "depart"
+              },
+              "mode": "driving",
+              "driving_side": "right",
+              "name": "Quai de l'Hôtel de Ville",
+              "intersections": [
+                {
+                  "out": 0,
+                  "entry": [true],
+                  "bearings": [120],
+                  "location": [2.351723, 48.855679]
+                },
+                {
+                  "out": 1,
+                  "in": 2,
+                  "entry": [true, true, false],
+                  "bearings": [90, 120, 315],
+                  "location": [2.352574, 48.855292]
+                },
+                {
+                  "out": 1,
+                  "in": 2,
+                  "entry": [false, true, false],
+                  "bearings": [30, 120, 300],
+                  "location": [2.353529, 48.854936]
+                },
+                {
+                  "out": 1,
+                  "in": 3,
+                  "entry": [true, true, false, false],
+                  "bearings": [30, 120, 210, 300],
+                  "location": [2.354944, 48.854376]
+                },
+                {
+                  "out": 1,
+                  "in": 2,
+                  "entry": [true, true, false],
+                  "bearings": [30, 120, 300],
+                  "location": [2.355736, 48.854071]
+                }
+              ],
+              "weight": 86.1,
+              "duration": 86.1,
+              "distance": 518.3
+            },
+            {
+              "geometry": "ahaiHakhM",
+              "maneuver": {
+                "bearing_after": 0,
+                "bearing_before": 5,
+                "location": [2.34177, 48.836013],
+                "modifier": "right",
+                "type": "arrive"
+              },
+              "mode": "driving",
+              "driving_side": "right",
+              "name": "Rue de la Santé",
+              "intersections": [
+                {
+                  "in": 0,
+                  "entry": [true],
+                  "bearings": [185],
+                  "location": [2.34177, 48.836013]
+                }
+              ],
+              "weight": 0,
+              "duration": 0,
+              "distance": 0
+            }
+          ],
+          "summary": "Quai de l'Hôtel de Ville, Rue Monge",
+          "weight": 582.6,
+          "duration": 572.5,
+          "distance": 3416.3
+        }
+      ],
+      "weight_name": "routability",
+      "weight": 592.6,
+      "duration": 580.5,
+      "distance": 3478.3
     }
   ],
   "waypoints": [

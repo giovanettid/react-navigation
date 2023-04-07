@@ -1,0 +1,28 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [2.54, 48.01],
+        "type": "Point"
+      },
+      "type": "Feature",
+      "properties": {
+        "osm_id": 5295293286,
+        "country": "France",
+        "city": "Paris",
+        "countrycode": "FR",
+        "postcode": "75014",
+        "locality": "Quartier du Montparnasse",
+        "type": "house",
+        "osm_type": "N",
+        "osm_key": "place",
+        "housenumber": "29",
+        "street": "Rue de la Santé",
+        "district": "Paris",
+        "osm_value": "house",
+        "state": "Île-de-France"
+      }
+    }
+  ],
+  "type": "FeatureCollection"
+}

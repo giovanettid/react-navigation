@@ -1,27 +1,34 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import Application from 'components/Application';
 import Configuration from 'components/Configuration';
 
 import * as routingResponse from './routing-response.json';
+import * as searchStartResponse from './search-start-response.json';
+import * as searchEndResponse from './search-end-response.json';
 
 describe('Application', () => {
   let server;
   const setup = () => {
     const configuration = new Configuration();
     configuration.routingServiceUrl = 'http://localhost';
+    configuration.geocodingServiceUrl = 'http://localhost';
     configuration.urlTilesTemplate = 'https://{s}.localhost/{z}/{x}/{y}.png';
 
+    const user = userEvent.setup();
     const utils = render(
       <Application configuration={() => ({ ...configuration })} />
     );
 
     return {
       ...utils,
+      user,
     };
   };
 
   beforeEach(() => {
+    document.body.innerHTML = '';
     server = sinon.fakeServer.create();
     server.respondImmediately = true;
 
@@ -30,6 +37,18 @@ describe('Application', () => {
       { 'content-Type': 'application/json' },
       JSON.stringify(routingResponse),
     ]);
+
+    server.respondWith('GET', /\/api\/\?q=quai/, [
+      200,
+      { 'content-Type': 'application/json' },
+      JSON.stringify(searchStartResponse),
+    ]);
+
+    server.respondWith('GET', /\/api\/\?q=sant/, [
+      200,
+      { 'content-Type': 'application/json' },
+      JSON.stringify(searchEndResponse),
+    ]);
   });
 
   afterEach(() => {
@@ -37,24 +56,108 @@ describe('Application', () => {
     sinon.restore();
   });
 
-  it('should display zoom', () => {
-    setup();
+  describe('startup display', () => {
+    it('should display zoom', () => {
+      setup();
 
-    expect(screen.getByTitle('Zoom in')).toBeInTheDocument();
-    expect(screen.getByTitle('Zoom out')).toBeInTheDocument();
+      expect(screen.getByTitle('Zoom in')).toBeInTheDocument();
+      expect(screen.getByTitle('Zoom out')).toBeInTheDocument();
+    });
+
+    it('should display attribution layer', () => {
+      setup();
+
+      expect(screen.getByText('OpenStreetMap')).toBeInTheDocument();
+    });
+
+    it('should display start and end placeholders', () => {
+      setup();
+
+      expect(screen.getByPlaceholderText('Start')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('End')).toBeInTheDocument();
+    });
   });
 
-  it('should display attribution layer', () => {
-    setup();
+  describe('user type itinerary', () => {
+    const typeAndSelectGeocodeResult = async (
+      user,
+      placeholder,
+      search,
+      suggest
+    ) => {
+      await user.type(screen.getByPlaceholderText(placeholder), search);
+      await screen.findByText(suggest, { exact: false });
+      await user.click(screen.getByText(suggest, { exact: false }));
+    };
 
-    expect(screen.getByText('OpenStreetMap')).toBeInTheDocument();
-  });
+    it('should geocode inputs search and display route', async () => {
+      // Given
+      const { user } = setup();
 
-  it('should display 2 way point markers', () => {
-    setup();
+      // When
+      await typeAndSelectGeocodeResult(
+        user,
+        'Start',
+        'quai',
+        "Quai de l'Hôtel de Ville"
+      );
+      // Then display result instead of placeholder
+      expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
+        "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
+      );
 
-    expect(screen.getAllByAltText('way point', { exact: false })).toHaveLength(
-      2
-    );
+      // When
+      await typeAndSelectGeocodeResult(user, 'End', 'sant', 'Rue de la Santé');
+      // Then display result instead of placeholder
+      expect(screen.getByPlaceholderText('End')).toHaveDisplayValue(
+        'Rue de la Santé, Paris, Île-de-France, France'
+      );
+
+      // And finally display itinerary and markers
+      await waitFor(() => {
+        expect(
+          screen.getAllByText('You have arrived at your destination', {
+            exact: false,
+          })
+        ).toHaveLength(2); // 1 visible + 1 alternative
+      });
+      expect(
+        screen.getAllByAltText('way point', { exact: false })
+      ).toHaveLength(2);
+    });
+
+    it('should call geocooding and routing services', async () => {
+      // Given
+      const { user } = setup();
+
+      // When
+      await typeAndSelectGeocodeResult(
+        user,
+        'Start',
+        'quai',
+        "Quai de l'Hôtel de Ville"
+      );
+      await typeAndSelectGeocodeResult(user, 'End', 'sant', 'Rue de la Santé');
+
+      // Then
+      expect(server.requests).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            status: 200,
+            url: expect.stringMatching('q=quai'),
+          }),
+          expect.objectContaining({
+            status: 200,
+            url: expect.stringMatching('q=sant'),
+          }),
+          expect.objectContaining({
+            status: 200,
+            url: expect.stringMatching(
+              '2.3522295,48.8554966;2.3415773,48.8346507'
+            ),
+          }),
+        ])
+      );
+    });
   });
 });

@@ -18,7 +18,7 @@ function Application({ configuration }) {
     urlTilesTemplate,
     attribution,
     routingServiceUrl,
-    end,
+    geocodingServiceUrl,
   } = state;
 
   return (
@@ -29,7 +29,10 @@ function Application({ configuration }) {
       renderer={renderer}
     >
       <TileLayer url={urlTilesTemplate} attribution={attribution} />
-      <RoutingControl serviceUrl={routingServiceUrl} start={center} end={end} />
+      <RoutingControl
+        routingServiceUrl={routingServiceUrl}
+        geocodingServiceUrl={geocodingServiceUrl}
+      />
     </MapContainer>
   );
 }

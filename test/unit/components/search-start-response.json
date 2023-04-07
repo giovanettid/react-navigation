@@ -1,0 +1,28 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [2.3522295, 48.8554966],
+        "type": "Point"
+      },
+      "type": "Feature",
+      "properties": {
+        "osm_id": 796250050,
+        "extent": [2.3521798, 48.8555083, 2.3524403, 48.855447],
+        "country": "France",
+        "city": "Paris",
+        "countrycode": "FR",
+        "postcode": "75004",
+        "locality": "Quartier Saint-Merri",
+        "type": "street",
+        "osm_type": "W",
+        "osm_key": "highway",
+        "district": "Le Marais",
+        "osm_value": "primary",
+        "name": "Quai de l'Hôtel de Ville",
+        "state": "Île-de-France"
+      }
+    }
+  ],
+  "type": "FeatureCollection"
+}

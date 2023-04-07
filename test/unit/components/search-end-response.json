@@ -1,0 +1,28 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [2.3415773, 48.8346507],
+        "type": "Point"
+      },
+      "type": "Feature",
+      "properties": {
+        "osm_id": 11288541,
+        "extent": [2.3412772, 48.8348131, 2.3416015, 48.8331134],
+        "country": "France",
+        "city": "Paris",
+        "countrycode": "FR",
+        "postcode": "75013",
+        "locality": "Quartier de Croulebarbe",
+        "type": "street",
+        "osm_type": "W",
+        "osm_key": "highway",
+        "district": "Paris",
+        "osm_value": "residential",
+        "name": "Rue de la Santé",
+        "state": "Île-de-France"
+      }
+    }
+  ],
+  "type": "FeatureCollection"
+}
