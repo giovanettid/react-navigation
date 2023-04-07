@@ -1,13 +1,12 @@
+import { render, screen, waitFor } from '@testing-library/react';
 import L from 'leaflet';
 import { MapContainer } from 'react-leaflet';
 
-import { render, screen, waitFor } from '@testing-library/react';
-
 import RoutingControl from 'components/RoutingControl/RoutingControl';
 
-import * as routingResponse from './fakes/routing-response.json';
-import * as reverseStartResponse from './fakes/reverse-start-response.json';
 import * as reverseEndResponse from './fakes/reverse-end-response.json';
+import * as reverseStartResponse from './fakes/reverse-start-response.json';
+import * as routingResponse from './fakes/routing-response.json';
 
 describe('RoutingControl', () => {
   let server;

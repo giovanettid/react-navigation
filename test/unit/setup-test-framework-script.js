@@ -1,7 +1,6 @@
-import 'raf/polyfill';
 import '@testing-library/jest-dom';
-
-import sinon from 'sinon';
 import 'jest-sinon';
+import 'raf/polyfill';
+import sinon from 'sinon';
 
 global.sinon = sinon;

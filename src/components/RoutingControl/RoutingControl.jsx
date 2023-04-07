@@ -1,8 +1,7 @@
-import L from 'leaflet';
-import 'leaflet-routing-machine';
-import 'leaflet-control-geocoder';
-
 import { createControlComponent } from '@react-leaflet/core';
+import L from 'leaflet';
+import 'leaflet-control-geocoder';
+import 'leaflet-routing-machine';
 
 const createRoutineMachineControl = ({
   routingServiceUrl,
