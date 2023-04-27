@@ -95,6 +95,30 @@ const config = {
     static: {
       directory: path.join(__dirname, sourceDir),
     },
+    proxy: [
+      {
+        context: ['/api', '/reverse'],
+        secure: false,
+        changeOrigin: true,
+        target: 'https://photon.komoot.io',
+      },
+      {
+        context: ['/driving'],
+        secure: false,
+        changeOrigin: true,
+        target: 'https://router.project-osrm.org/route/v1',
+      },
+      {
+        context: (pathname) => pathname.match('//./tile/'),
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: (path) => path.replace(/\/.\/tile/, ''),
+        router: (req) => {
+          const subDomain = req.url.split('/')[1];
+          return `https://${subDomain}.tile.openstreetmap.org`;
+        },
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
