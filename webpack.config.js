@@ -3,11 +3,14 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const apis = require('./apis');
 
 const devMode = process.env.NODE_ENV !== 'production';
 const buildDir = 'build';
 const sourceDir = 'src';
 const stylesDir = `${sourceDir}/styles`;
+
+const proxy = apis.map(({ context, options }) => ({ context, ...options }));
 
 const config = {
   mode: process.env.NODE_ENV || 'development',
@@ -95,30 +98,7 @@ const config = {
     static: {
       directory: path.join(__dirname, sourceDir),
     },
-    proxy: [
-      {
-        context: ['/api', '/reverse'],
-        secure: false,
-        changeOrigin: true,
-        target: 'https://photon.komoot.io',
-      },
-      {
-        context: ['/driving'],
-        secure: false,
-        changeOrigin: true,
-        target: 'https://router.project-osrm.org/route/v1',
-      },
-      {
-        context: (pathname) => pathname.match('//./tile/'),
-        secure: false,
-        changeOrigin: true,
-        pathRewrite: (path) => path.replace(/\/.\/tile/, ''),
-        router: (req) => {
-          const subDomain = req.url.split('/')[1];
-          return `https://${subDomain}.tile.openstreetmap.org`;
-        },
-      },
-    ],
+    proxy,
   },
   plugins: [
     new CleanWebpackPlugin(),

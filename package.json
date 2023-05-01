@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "server:build": "npm run build && browser-sync start -s $npm_package_config_buildDir",
+    "server:build": "npm run build && browser-sync start -s $npm_package_config_buildDir -c browsersync-config.js",
     "prettier": "prettier '**/*.{js,jsx,json,scss,md}' --write",
     "lint": "run-p lint:*",
     "lint:js": "eslint '{src,test}/**/*.{js,jsx}'",
@@ -75,6 +75,7 @@
     "fs-extra": "^11.1.0",
     "glob": "^9.2.1",
     "html-webpack-plugin": "^5.5.0",
+    "http-proxy-middleware": "^2.0.6",
     "husky": "^8.0.3",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
