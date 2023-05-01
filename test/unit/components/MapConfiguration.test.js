@@ -1,7 +1,6 @@
 import L from 'leaflet';
 
 import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
-import MapEnvironment from 'components/Map/Configuration/MapEnvironment';
 
 describe('MapConfiguration', () => {
   const configuration = new MapConfiguration();
@@ -19,8 +18,14 @@ describe('MapConfiguration', () => {
       expect(configuration.renderer).toBeInstanceOf(L.SVG);
     });
 
-    it('property environment is instance of MapEnvironment', () => {
-      expect(configuration.environment).toBeInstanceOf(MapEnvironment);
+    it('property urlTilesTemplate contains openstreetmap placeholders', () => {
+      expect(configuration.urlTilesTemplate).toBe('/{s}/tile/{z}/{x}/{y}.png');
+    });
+
+    it('property attribution is openstreetmap copyright', () => {
+      expect(configuration.attribution).toBe(
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      );
     });
   });
 });

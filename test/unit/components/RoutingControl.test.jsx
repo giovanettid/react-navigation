@@ -40,11 +40,7 @@ describe('RoutingControl', () => {
 
     const utils = render(
       <MapContainer center={[48.01, 2.55]} zoom={13} renderer={new L.SVG()}>
-        <RoutingControl
-          routingServiceUrl="http://localhost"
-          geocodingServiceUrl="http://localhost"
-          waypoints={waypoints}
-        />
+        <RoutingControl waypoints={waypoints} />
       </MapContainer>
     );
 

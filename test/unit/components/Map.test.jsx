@@ -35,18 +35,14 @@ describe('Map', () => {
   };
 
   const setup = () => {
-    const configuration = new MapConfiguration();
-    configuration.environment.routingServiceUrl = 'http://localhost';
-    configuration.environment.geocodingServiceUrl = 'http://localhost';
-    configuration.environment.urlTilesTemplate =
-      'https://{s}.localhost/{z}/{x}/{y}.png';
-
     setupFakeServer();
 
     document.body.innerHTML = '';
 
     const user = userEvent.setup();
-    const utils = render(<Map configuration={() => ({ ...configuration })} />);
+    const utils = render(
+      <Map configuration={() => ({ ...new MapConfiguration() })} />
+    );
 
     return {
       ...utils,
