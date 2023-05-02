@@ -98,6 +98,7 @@ const config = {
     static: {
       directory: path.join(__dirname, sourceDir),
     },
+    historyApiFallback: true,
     proxy,
   },
   plugins: [

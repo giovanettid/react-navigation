@@ -4,9 +4,16 @@ import 'leaflet-control-geocoder';
 import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
 
 describe('MapConfiguration', () => {
-  const configuration = new MapConfiguration();
+  const configuration = new MapConfiguration('/bike');
 
   describe('new instance', () => {
+    it('property isBikeProfile is truthy if path is /bike else falsy', () => {
+      expect(new MapConfiguration('/bike').isBikeProfile).toBeTruthy();
+      expect(new MapConfiguration('/').isBikeProfile).toBeFalsy();
+      expect(new MapConfiguration('').isBikeProfile).toBeFalsy();
+      expect(new MapConfiguration().isBikeProfile).toBeFalsy();
+    });
+
     it('property center to be Paris latitude, longitude', () => {
       expect(configuration.center).toEqual({ lat: 48.856, lng: 2.352 });
     });

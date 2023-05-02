@@ -6,6 +6,7 @@ module.exports = {
     'prettier',
   ],
   globals: {
+    window: true,
     document: false,
   },
   rules: {

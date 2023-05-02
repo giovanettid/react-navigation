@@ -1,8 +1,11 @@
 import L from 'leaflet';
 import 'leaflet-control-geocoder';
 
+const isBikeProfile = (pathname) => pathname?.split('/')[1] === 'bike';
 export default class MapConfiguration {
-  constructor() {
+  constructor(pathname) {
+    this.isBikeProfile = isBikeProfile(pathname);
+
     this.center = L.latLng(48.856, 2.352);
     this.initialZoom = 13;
     this.renderer = L.svg() ?? new L.SVG();
