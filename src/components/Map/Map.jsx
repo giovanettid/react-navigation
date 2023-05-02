@@ -10,8 +10,15 @@ import './Map.scss';
 function Map({ configuration }) {
   const [state] = useState(configuration());
 
-  const { center, initialZoom, renderer, urlTilesTemplate, attribution } =
-    state;
+  const {
+    center,
+    initialZoom,
+    renderer,
+    urlTilesTemplate,
+    attribution,
+    router,
+    geocoder,
+  } = state;
 
   return (
     <MapContainer
@@ -21,7 +28,7 @@ function Map({ configuration }) {
       renderer={renderer}
     >
       <TileLayer url={urlTilesTemplate} attribution={attribution} />
-      <RoutingControl />
+      <RoutingControl router={router} geocoder={geocoder} />
     </MapContainer>
   );
 }

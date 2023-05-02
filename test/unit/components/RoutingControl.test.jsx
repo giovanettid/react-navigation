@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import L from 'leaflet';
+import 'leaflet-control-geocoder';
 import { MapContainer } from 'react-leaflet';
 
 import RoutingControl from 'components/RoutingControl/RoutingControl';
@@ -38,9 +39,18 @@ describe('RoutingControl', () => {
 
     document.body.innerHTML = '';
 
+    const geocoder = L.Control.Geocoder.photon({
+      serviceUrl: `/api/`,
+      reverseUrl: `/reverse/`,
+    });
+
     const utils = render(
       <MapContainer center={[48.01, 2.55]} zoom={13} renderer={new L.SVG()}>
-        <RoutingControl waypoints={waypoints} />
+        <RoutingControl
+          router={undefined}
+          geocoder={geocoder}
+          waypoints={waypoints}
+        />
       </MapContainer>
     );
 

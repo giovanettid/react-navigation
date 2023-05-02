@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import 'leaflet-control-geocoder';
 
 import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
 
@@ -26,6 +27,23 @@ describe('MapConfiguration', () => {
       expect(configuration.attribution).toBe(
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       );
+    });
+
+    it('property geocoder is instance of Photon', () => {
+      expect(configuration.geocoder).toBeInstanceOf(L.Control.Geocoder.Photon);
+    });
+
+    it('geocoder options contains service and reverse apis', () => {
+      expect(configuration.geocoder.options).toEqual(
+        expect.objectContaining({
+          serviceUrl: `/api/`,
+          reverseUrl: `/reverse/`,
+        })
+      );
+    });
+
+    it('property router is undefined', () => {
+      expect(configuration.router).toBeUndefined();
     });
   });
 });
