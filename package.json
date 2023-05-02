@@ -12,7 +12,9 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
+    "start:local": "API=local run-s start",
     "server:build": "npm run build && browser-sync start -s $npm_package_config_buildDir -c browsersync-config.js",
+    "server:build:local": "API=local run-s server:build",
     "prettier": "prettier '**/*.{js,jsx,json,scss,md}' --write",
     "lint": "run-p lint:*",
     "lint:js": "eslint '{src,test}/**/*.{js,jsx}'",
@@ -32,6 +34,7 @@
     "leaflet-control-geocoder": "^2.4.0",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet-routing-machine": "^3.2.12",
+    "lrm-graphhopper": "^1.3.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

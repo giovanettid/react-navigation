@@ -6,11 +6,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const apis = require('./apis');
 
 const devMode = process.env.NODE_ENV !== 'production';
+const api = process.env.API || 'public';
 const buildDir = 'build';
 const sourceDir = 'src';
 const stylesDir = `${sourceDir}/styles`;
 
-const proxy = apis.map(({ context, options }) => ({ context, ...options }));
+const proxy = apis[api].map(({ context, options }) => ({
+  context,
+  ...options,
+}));
 
 const config = {
   mode: process.env.NODE_ENV || 'development',

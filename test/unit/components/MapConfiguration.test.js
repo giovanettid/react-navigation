@@ -1,5 +1,7 @@
 import L from 'leaflet';
 import 'leaflet-control-geocoder';
+import 'leaflet-routing-machine';
+import 'lrm-graphhopper';
 
 import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
 
@@ -7,13 +9,6 @@ describe('MapConfiguration', () => {
   const configuration = new MapConfiguration('/bike');
 
   describe('new instance', () => {
-    it('property isBikeProfile is truthy if path is /bike else falsy', () => {
-      expect(new MapConfiguration('/bike').isBikeProfile).toBeTruthy();
-      expect(new MapConfiguration('/').isBikeProfile).toBeFalsy();
-      expect(new MapConfiguration('').isBikeProfile).toBeFalsy();
-      expect(new MapConfiguration().isBikeProfile).toBeFalsy();
-    });
-
     it('property center to be Paris latitude, longitude', () => {
       expect(configuration.center).toEqual({ lat: 48.856, lng: 2.352 });
     });
@@ -36,6 +31,24 @@ describe('MapConfiguration', () => {
       );
     });
 
+    it('property router is instance of GraphHopper if path is /bike else undefined(default osrm)', () => {
+      expect(new MapConfiguration('/bike').router).toBeInstanceOf(
+        L.Routing.GraphHopper
+      );
+      expect(new MapConfiguration('/').router).toBeUndefined();
+      expect(new MapConfiguration('').router).toBeUndefined();
+      expect(new MapConfiguration().router).toBeUndefined();
+    });
+
+    it('router options contains service and urlParameters', () => {
+      expect(configuration.router.options).toEqual(
+        expect.objectContaining({
+          serviceUrl: '/route',
+          urlParameters: { profile: 'bike' },
+        })
+      );
+    });
+
     it('property geocoder is instance of Photon', () => {
       expect(configuration.geocoder).toBeInstanceOf(L.Control.Geocoder.Photon);
     });
@@ -47,10 +60,6 @@ describe('MapConfiguration', () => {
           reverseUrl: `/reverse/`,
         })
       );
-    });
-
-    it('property router is undefined', () => {
-      expect(configuration.router).toBeUndefined();
     });
   });
 });
