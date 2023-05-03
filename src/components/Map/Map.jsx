@@ -10,23 +10,17 @@ import './Map.scss';
 function Map({ configuration }) {
   const [state] = useState(configuration());
 
-  const { center, initialZoom, renderer, environment } = state;
+  const { container, layer, control } = state;
 
   return (
     <MapContainer
-      center={center}
-      zoom={initialZoom}
+      center={container.center}
+      zoom={container.zoom}
+      renderer={container.renderer}
       scrollWheelZoom={false}
-      renderer={renderer}
     >
-      <TileLayer
-        url={environment.urlTilesTemplate}
-        attribution={environment.attribution}
-      />
-      <RoutingControl
-        routingServiceUrl={environment.routingServiceUrl}
-        geocodingServiceUrl={environment.geocodingServiceUrl}
-      />
+      <TileLayer url={layer.url} attribution={layer.attribution} />
+      <RoutingControl router={control.router} geocoder={control.geocoder} />
     </MapContainer>
   );
 }

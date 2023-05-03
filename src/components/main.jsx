@@ -7,4 +7,10 @@ import 'styles/main.scss';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-root.render(<Map configuration={() => ({ ...new MapConfiguration() })} />);
+root.render(
+  <Map
+    configuration={() => ({
+      ...new MapConfiguration(window.location.pathname),
+    })}
+  />
+);

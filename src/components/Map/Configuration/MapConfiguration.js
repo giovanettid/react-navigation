@@ -1,13 +1,11 @@
-import L from 'leaflet';
-
-import MapEnvironment from './MapEnvironment';
+import ContainerConfiguration from './ContainerConfiguration';
+import ControlConfiguration from './ControlConfiguration';
+import LayerConfiguration from './LayerConfiguration';
 
 export default class MapConfiguration {
-  constructor() {
-    this.center = L.latLng(48.856, 2.352);
-    this.initialZoom = 13;
-    this.renderer = L.svg() ?? new L.SVG();
-
-    this.environment = new MapEnvironment();
+  constructor(pathname) {
+    this.container = new ContainerConfiguration();
+    this.layer = new LayerConfiguration();
+    this.control = new ControlConfiguration(pathname);
   }
 }

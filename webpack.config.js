@@ -3,11 +3,18 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const apis = require('./apis');
 
 const devMode = process.env.NODE_ENV !== 'production';
+const api = process.env.API || 'public';
 const buildDir = 'build';
 const sourceDir = 'src';
 const stylesDir = `${sourceDir}/styles`;
+
+const proxy = apis[api].map(({ context, options }) => ({
+  context,
+  ...options,
+}));
 
 const config = {
   mode: process.env.NODE_ENV || 'development',
@@ -95,6 +102,8 @@ const config = {
     static: {
       directory: path.join(__dirname, sourceDir),
     },
+    historyApiFallback: true,
+    proxy,
   },
   plugins: [
     new CleanWebpackPlugin(),

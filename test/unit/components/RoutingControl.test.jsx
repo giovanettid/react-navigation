@@ -1,12 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import L from 'leaflet';
+import 'leaflet-control-geocoder';
 import { MapContainer } from 'react-leaflet';
 
 import RoutingControl from 'components/RoutingControl/RoutingControl';
 
+import * as routingResponse from './fakes/osrm-routing-response.json';
 import * as reverseEndResponse from './fakes/reverse-end-response.json';
 import * as reverseStartResponse from './fakes/reverse-start-response.json';
-import * as routingResponse from './fakes/routing-response.json';
 
 describe('RoutingControl', () => {
   let server;
@@ -38,11 +39,16 @@ describe('RoutingControl', () => {
 
     document.body.innerHTML = '';
 
+    const geocoder = L.Control.Geocoder.photon({
+      serviceUrl: `/api/`,
+      reverseUrl: `/reverse/`,
+    });
+
     const utils = render(
       <MapContainer center={[48.01, 2.55]} zoom={13} renderer={new L.SVG()}>
         <RoutingControl
-          routingServiceUrl="http://localhost"
-          geocodingServiceUrl="http://localhost"
+          router={undefined}
+          geocoder={geocoder}
           waypoints={waypoints}
         />
       </MapContainer>
