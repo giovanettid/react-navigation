@@ -5,9 +5,9 @@ import { MapContainer } from 'react-leaflet';
 
 import RoutingControl from 'components/RoutingControl/RoutingControl';
 
+import * as routingResponse from './fakes/osrm-routing-response.json';
 import * as reverseEndResponse from './fakes/reverse-end-response.json';
 import * as reverseStartResponse from './fakes/reverse-start-response.json';
-import * as routingResponse from './fakes/routing-response.json';
 
 describe('RoutingControl', () => {
   let server;

@@ -1,0 +1,102 @@
+{
+  "hints": {
+    "visited_nodes.sum": 118,
+    "visited_nodes.average": 118.0
+  },
+  "info": {
+    "copyrights": ["GraphHopper", "OpenStreetMap contributors"],
+    "took": 21
+  },
+  "paths": [
+    {
+      "distance": 3125.004,
+      "weight": 630.059165,
+      "time": 709514,
+      "transfers": 0,
+      "points_encoded": true,
+      "bbox": [2.33775, 48.834651, 2.35223, 48.856063],
+      "points": "yaeiHkljMqBpHp@WtClBs@jCcAxFd\\xOp[lNhD~AvF|BjGbC`DHTJfCHz@NxL~GjHfElH~DLkBl@yMf@mEnCT",
+      "instructions": [
+        {
+          "distance": 128.967,
+          "heading": 289.69,
+          "sign": 0,
+          "interval": [0, 1],
+          "text": "Continue onto Quai de l'Hôtel de Ville",
+          "time": 25793,
+          "street_name": "Quai de l'Hôtel de Ville"
+        },
+        {
+          "distance": 28.525,
+          "sign": -3,
+          "interval": [1, 2],
+          "text": "Turn sharp left onto Pont d'Arcole",
+          "time": 5705,
+          "street_name": "Pont d'Arcole"
+        },
+        {
+          "distance": 93.043,
+          "sign": 1,
+          "interval": [2, 3],
+          "text": "Turn slight right onto Pont d'Arcole",
+          "time": 16950,
+          "street_name": "Pont d'Arcole"
+        },
+        {
+          "distance": 157.318,
+          "sign": 2,
+          "interval": [3, 5],
+          "text": "Turn right onto Quai de la Corse",
+          "time": 31463,
+          "street_name": "Quai de la Corse"
+        },
+        {
+          "distance": 1341.509,
+          "sign": -2,
+          "interval": [5, 9],
+          "text": "Turn left onto Rue de la Cité",
+          "time": 354472,
+          "street_name": "Rue de la Cité"
+        },
+        {
+          "distance": 1000.708,
+          "sign": 0,
+          "interval": [9, 17],
+          "text": "Continue onto Rue Saint-Jacques",
+          "time": 200142,
+          "street_name": "Rue Saint-Jacques"
+        },
+        {
+          "distance": 293.663,
+          "sign": -2,
+          "interval": [17, 20],
+          "text": "Turn left onto Rue Méchain",
+          "time": 58734,
+          "street_name": "Rue Méchain"
+        },
+        {
+          "distance": 81.271,
+          "sign": 2,
+          "interval": [20, 21],
+          "text": "Turn right onto Rue de la Santé",
+          "time": 16255,
+          "street_name": "Rue de la Santé"
+        },
+        {
+          "distance": 0.0,
+          "sign": 4,
+          "last_heading": 187.26552576055826,
+          "interval": [21, 21],
+          "text": "You have arrived at your destination",
+          "time": 0,
+          "street_name": ""
+        }
+      ],
+      "legs": [],
+      "details": {},
+      "ascend": 0.0,
+      "descend": 0.0,
+      "snapped_waypoints": "yaeiHkljMfaCpaA"
+    }
+  ]
+}

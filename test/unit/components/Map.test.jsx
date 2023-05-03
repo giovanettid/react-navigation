@@ -4,7 +4,8 @@ import userEvent from '@testing-library/user-event';
 import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
 import Map from 'components/Map/Map';
 
-import * as routingResponse from './fakes/routing-response.json';
+import * as graphhopperRoutingResponse from './fakes/graphhopper-routing-response.json';
+import * as osrmRoutingResponse from './fakes/osrm-routing-response.json';
 import * as searchEndResponse from './fakes/search-end-response.json';
 import * as searchStartResponse from './fakes/search-start-response.json';
 
@@ -18,7 +19,13 @@ describe('Map', () => {
     server.respondWith('GET', /\/driving\//, [
       200,
       { 'content-Type': 'application/json' },
-      JSON.stringify(routingResponse),
+      JSON.stringify(osrmRoutingResponse),
+    ]);
+
+    server.respondWith('GET', /\/route/, [
+      200,
+      { 'content-Type': 'application/json' },
+      JSON.stringify(graphhopperRoutingResponse),
     ]);
 
     server.respondWith('GET', /\/api\/\?q=quai/, [
@@ -34,14 +41,14 @@ describe('Map', () => {
     ]);
   };
 
-  const setup = () => {
+  const setup = (path) => {
     setupFakeServer();
 
     document.body.innerHTML = '';
 
     const user = userEvent.setup();
     const utils = render(
-      <Map configuration={() => ({ ...new MapConfiguration() })} />
+      <Map configuration={() => ({ ...new MapConfiguration(path) })} />
     );
 
     return {
@@ -89,74 +96,151 @@ describe('Map', () => {
       await user.click(screen.getByText(suggest, { exact: false }));
     };
 
-    it('should geocode inputs search and display route', async () => {
-      // Given
-      const { user } = setup();
+    describe('osrm', () => {
+      it('should geocode inputs search and display route', async () => {
+        // Given
+        const { user } = setup();
 
-      // When
-      await typeAndSelectGeocodeResult(
-        user,
-        'Start',
-        'quai',
-        "Quai de l'Hôtel de Ville"
-      );
-      // Then display result instead of placeholder
-      expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
-        "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
-      );
+        // When
+        await typeAndSelectGeocodeResult(
+          user,
+          'Start',
+          'quai',
+          "Quai de l'Hôtel de Ville"
+        );
+        // Then display result instead of placeholder
+        expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
+          "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
+        );
 
-      // When
-      await typeAndSelectGeocodeResult(user, 'End', 'sant', 'Rue de la Santé');
-      // Then display result instead of placeholder
-      expect(screen.getByPlaceholderText('End')).toHaveDisplayValue(
-        'Rue de la Santé, Paris, Île-de-France, France'
-      );
+        // When
+        await typeAndSelectGeocodeResult(
+          user,
+          'End',
+          'sant',
+          'Rue de la Santé'
+        );
+        // Then display result instead of placeholder
+        expect(screen.getByPlaceholderText('End')).toHaveDisplayValue(
+          'Rue de la Santé, Paris, Île-de-France, France'
+        );
 
-      // And finally display itinerary and markers
-      await waitFor(() => {
+        // And finally display itinerary and markers
+        await waitFor(() => {
+          expect(
+            screen.getAllByText('You have arrived at your destination', {
+              exact: false,
+            })
+          ).toHaveLength(2); // 1 visible + 1 alternative
+        });
         expect(
-          screen.getAllByText('You have arrived at your destination', {
-            exact: false,
-          })
-        ).toHaveLength(2); // 1 visible + 1 alternative
+          screen.getAllByAltText('way point', { exact: false })
+        ).toHaveLength(2);
       });
-      expect(
-        screen.getAllByAltText('way point', { exact: false })
-      ).toHaveLength(2);
+
+      it('should call geocooding and routing services', async () => {
+        // Given
+        const { user } = setup();
+
+        // When
+        await typeAndSelectGeocodeResult(
+          user,
+          'Start',
+          'quai',
+          "Quai de l'Hôtel de Ville"
+        );
+        await typeAndSelectGeocodeResult(
+          user,
+          'End',
+          'sant',
+          'Rue de la Santé'
+        );
+
+        // Then
+        expect(server.requests).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              status: 200,
+              url: expect.stringMatching('q=quai'),
+            }),
+            expect.objectContaining({
+              status: 200,
+              url: expect.stringMatching('q=sant'),
+            }),
+            expect.objectContaining({
+              status: 200,
+              url: expect.stringMatching(
+                '2.3522295,48.8554966;2.3415773,48.8346507'
+              ),
+            }),
+          ])
+        );
+      });
     });
 
-    it('should call geocooding and routing services', async () => {
-      // Given
-      const { user } = setup();
+    describe('graphhopper', () => {
+      it('should geocode inputs search and display route', async () => {
+        // Given
+        const { user } = setup('/bike');
 
-      // When
-      await typeAndSelectGeocodeResult(
-        user,
-        'Start',
-        'quai',
-        "Quai de l'Hôtel de Ville"
-      );
-      await typeAndSelectGeocodeResult(user, 'End', 'sant', 'Rue de la Santé');
+        // When
+        await typeAndSelectGeocodeResult(
+          user,
+          'Start',
+          'quai',
+          "Quai de l'Hôtel de Ville"
+        );
 
-      // Then
-      expect(server.requests).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            status: 200,
-            url: expect.stringMatching('q=quai'),
-          }),
-          expect.objectContaining({
-            status: 200,
-            url: expect.stringMatching('q=sant'),
-          }),
-          expect.objectContaining({
-            status: 200,
-            url: expect.stringMatching(
-              '2.3522295,48.8554966;2.3415773,48.8346507'
-            ),
-          }),
-        ])
-      );
+        // When
+        await typeAndSelectGeocodeResult(
+          user,
+          'End',
+          'sant',
+          'Rue de la Santé'
+        );
+
+        // Then
+        expect(
+          await screen.findByText('You have arrived at your destination', {
+            exact: false,
+          })
+        ).toBeInTheDocument();
+
+        expect(
+          screen.getAllByAltText('way point', { exact: false })
+        ).toHaveLength(2);
+      });
+
+      it('should call routing service', async () => {
+        // Given
+        const { user } = setup('/bike');
+
+        // When
+        await typeAndSelectGeocodeResult(
+          user,
+          'Start',
+          'quai',
+          "Quai de l'Hôtel de Ville"
+        );
+        await typeAndSelectGeocodeResult(
+          user,
+          'End',
+          'sant',
+          'Rue de la Santé'
+        );
+
+        // Then
+        expect(server.requests).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              status: 200,
+              url: expect.stringMatching(
+                'point=48.8554966,2.3522295&point=48.8346507,2.3415773'
+              ),
+            }),
+          ])
+        );
+      });
     });
   });
 });
