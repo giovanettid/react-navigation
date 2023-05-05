@@ -109,8 +109,8 @@ const config = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'js starter',
-      favicon: `./${sourceDir}/images/favicon.ico`,
+      title: 'Navigation',
+      favicon: `./${sourceDir}/images/favicon-32x32.png`,
       template: `./${sourceDir}/index.ejs`,
     }),
     new MiniCssExtractPlugin({
