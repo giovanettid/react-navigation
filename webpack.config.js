@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const apis = require('./apis');
 
 const devMode = process.env.NODE_ENV !== 'production';
@@ -114,6 +115,22 @@ const config = {
     }),
     new MiniCssExtractPlugin({
       filename: `styles.bundle${devMode ? '' : '.[contenthash]'}.css`,
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: `${sourceDir}/manifest.json`,
+          to: 'manifest.json',
+        },
+        {
+          from: `${sourceDir}/images/launchericons`,
+          to: 'images/launchericons',
+        },
+        {
+          from: `${sourceDir}/serviceWorker.js`,
+          to: 'serviceWorker.js',
+        },
+      ],
     }),
   ],
 };

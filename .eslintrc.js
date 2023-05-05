@@ -7,6 +7,8 @@ module.exports = {
   ],
   globals: {
     window: true,
+    navigator: true,
+    self: true,
     document: false,
   },
   rules: {
