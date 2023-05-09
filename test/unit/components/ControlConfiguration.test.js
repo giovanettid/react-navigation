@@ -18,7 +18,7 @@ describe('ControlConfiguration', () => {
         expect(configuration.router.options).toEqual(
           expect.objectContaining({
             serviceUrl: '/route',
-            urlParameters: { profile: 'bike' },
+            urlParameters: { profile: 'bike', algorithm: 'alternative_route' },
           })
         );
       });

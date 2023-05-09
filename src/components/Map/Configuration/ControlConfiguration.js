@@ -10,7 +10,10 @@ export default class ControlConfiguration {
     this.router = isBikeProfile(pathname)
       ? new L.Routing.GraphHopper(undefined, {
           serviceUrl: '/route',
-          urlParameters: { profile: bikeProfile },
+          urlParameters: {
+            profile: bikeProfile,
+            algorithm: 'alternative_route',
+          },
         })
       : undefined;
     this.geocoder = L.Control.Geocoder.photon({

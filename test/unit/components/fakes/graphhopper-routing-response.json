@@ -97,6 +97,168 @@
       "ascend": 0.0,
       "descend": 0.0,
       "snapped_waypoints": "yaeiHkljMfaCpaA"
+    },
+    {
+      "distance": 3561.819,
+      "weight": 640.830165,
+      "time": 693906,
+      "transfers": 0,
+      "points_encoded": true,
+      "bbox": [2.336553, 48.834651, 2.35223, 48.856198],
+      "points": "yaeiHkljMqBpHp@WtClBs@jCmDfRlAn@|AfAtDpD|BjCNXt@BrRjHjNjHRZt@`@EJGd@@RHPVHJG~@]JOpQjIvLpFhDbB`BfBv@Xt@F`@Ab@iAlC_PzG|DlH~DLkBl@yMf@mEnCT",
+      "instructions": [
+        {
+          "distance": 128.967,
+          "heading": 289.69,
+          "sign": 0,
+          "interval": [0, 1],
+          "text": "Continue onto Quai de l'Hôtel de Ville",
+          "time": 25793,
+          "street_name": "Quai de l'Hôtel de Ville"
+        },
+        {
+          "distance": 28.525,
+          "sign": -3,
+          "interval": [1, 2],
+          "text": "Turn sharp left onto Pont d'Arcole",
+          "time": 5705,
+          "street_name": "Pont d'Arcole"
+        },
+        {
+          "distance": 93.043,
+          "sign": 1,
+          "interval": [2, 3],
+          "text": "Turn slight right onto Pont d'Arcole",
+          "time": 16950,
+          "street_name": "Pont d'Arcole"
+        },
+        {
+          "distance": 304.219,
+          "sign": 2,
+          "interval": [3, 5],
+          "text": "Turn right onto Quai de la Corse",
+          "time": 57906,
+          "street_name": "Quai de la Corse"
+        },
+        {
+          "distance": 313.039,
+          "sign": -2,
+          "interval": [5, 9],
+          "text": "Turn left onto Boulevard du Palais",
+          "time": 58880,
+          "street_name": "Boulevard du Palais"
+        },
+        {
+          "distance": 12.666,
+          "sign": 1,
+          "interval": [9, 10],
+          "text": "Turn slight right onto Place Saint-Michel",
+          "time": 2533,
+          "street_name": "Place Saint-Michel"
+        },
+        {
+          "distance": 30.573,
+          "sign": -2,
+          "interval": [10, 11],
+          "text": "Turn left onto Place Saint-Michel",
+          "time": 6115,
+          "street_name": "Place Saint-Michel"
+        },
+        {
+          "distance": 660.388,
+          "sign": 1,
+          "interval": [11, 13],
+          "text": "Turn slight right onto Boulevard Saint-Michel",
+          "time": 123004,
+          "street_name": "Boulevard Saint-Michel"
+        },
+        {
+          "distance": 47.233,
+          "sign": 7,
+          "interval": [13, 15],
+          "text": "Keep right onto Boulevard Saint-Michel",
+          "time": 9140,
+          "street_name": "Boulevard Saint-Michel"
+        },
+        {
+          "distance": 19.921,
+          "sign": 3,
+          "interval": [15, 17],
+          "text": "Turn sharp right onto Place Edmond Rostand",
+          "time": 3984,
+          "street_name": "Place Edmond Rostand"
+        },
+        {
+          "distance": 37.787,
+          "sign": -7,
+          "interval": [17, 21],
+          "text": "Keep left onto Place Edmond Rostand",
+          "time": 6802,
+          "street_name": "Place Edmond Rostand"
+        },
+        {
+          "distance": 45.869,
+          "sign": 7,
+          "interval": [21, 23],
+          "text": "Keep right onto Place Edmond Rostand",
+          "time": 9174,
+          "street_name": "Place Edmond Rostand"
+        },
+        {
+          "distance": 862.651,
+          "sign": 2,
+          "interval": [23, 30],
+          "text": "Turn right onto Boulevard Saint-Michel",
+          "time": 172531,
+          "street_name": "Boulevard Saint-Michel"
+        },
+        {
+          "distance": 247.29,
+          "sign": -2,
+          "interval": [30, 32],
+          "text": "Turn left onto Boulevard du Montparnasse",
+          "time": 49457,
+          "street_name": "Boulevard du Montparnasse"
+        },
+        {
+          "distance": 354.714,
+          "sign": 2,
+          "interval": [32, 34],
+          "text": "Turn right onto Rue du Faubourg Saint-Jacques",
+          "time": 70943,
+          "street_name": "Rue du Faubourg Saint-Jacques"
+        },
+        {
+          "distance": 293.663,
+          "sign": -2,
+          "interval": [34, 37],
+          "text": "Turn left onto Rue Méchain",
+          "time": 58734,
+          "street_name": "Rue Méchain"
+        },
+        {
+          "distance": 81.271,
+          "sign": 2,
+          "interval": [37, 38],
+          "text": "Turn right onto Rue de la Santé",
+          "time": 16255,
+          "street_name": "Rue de la Santé"
+        },
+        {
+          "distance": 0.0,
+          "sign": 4,
+          "last_heading": 187.26552576055826,
+          "interval": [38, 38],
+          "text": "You have arrived at your destination",
+          "time": 0,
+          "street_name": ""
+        }
+      ],
+      "legs": [],
+      "details": {},
+      "ascend": 0.0,
+      "descend": 0.0,
+      "snapped_waypoints": "yaeiHkljMfaCpaA"
     }
   ]
 }
