@@ -96,30 +96,31 @@ describe('Map', () => {
       await user.click(screen.getByText(suggest, { exact: false }));
     };
 
+    const startItinerary = (user) =>
+      typeAndSelectGeocodeResult(
+        user,
+        'Start',
+        'quai',
+        "Quai de l'Hôtel de Ville"
+      );
+
+    const endItinerary = (user) =>
+      typeAndSelectGeocodeResult(user, 'End', 'sant', 'Rue de la Santé');
+
     describe('osrm', () => {
       it('should geocode inputs search and display route', async () => {
         // Given
         const { user } = setup();
 
         // When
-        await typeAndSelectGeocodeResult(
-          user,
-          'Start',
-          'quai',
-          "Quai de l'Hôtel de Ville"
-        );
+        await startItinerary(user);
         // Then display result instead of placeholder
         expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
           "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
         );
 
         // When
-        await typeAndSelectGeocodeResult(
-          user,
-          'End',
-          'sant',
-          'Rue de la Santé'
-        );
+        await endItinerary(user);
         // Then display result instead of placeholder
         expect(screen.getByPlaceholderText('End')).toHaveDisplayValue(
           'Rue de la Santé, Paris, Île-de-France, France'
@@ -143,18 +144,8 @@ describe('Map', () => {
         const { user } = setup();
 
         // When
-        await typeAndSelectGeocodeResult(
-          user,
-          'Start',
-          'quai',
-          "Quai de l'Hôtel de Ville"
-        );
-        await typeAndSelectGeocodeResult(
-          user,
-          'End',
-          'sant',
-          'Rue de la Santé'
-        );
+        await startItinerary(user);
+        await endItinerary(user);
 
         // Then
         expect(server.requests).toEqual(
@@ -184,27 +175,17 @@ describe('Map', () => {
         const { user } = setup('/bike');
 
         // When
-        await typeAndSelectGeocodeResult(
-          user,
-          'Start',
-          'quai',
-          "Quai de l'Hôtel de Ville"
-        );
-
-        // When
-        await typeAndSelectGeocodeResult(
-          user,
-          'End',
-          'sant',
-          'Rue de la Santé'
-        );
+        await startItinerary(user);
+        await endItinerary(user);
 
         // Then
-        expect(
-          await screen.findByText('You have arrived at your destination', {
-            exact: false,
-          })
-        ).toBeInTheDocument();
+        await waitFor(() => {
+          expect(
+            screen.getAllByText('You have arrived at your destination', {
+              exact: false,
+            })
+          ).toHaveLength(2); // 1 visible + 1 alternative
+        });
 
         expect(
           screen.getAllByAltText('way point', { exact: false })
@@ -216,18 +197,8 @@ describe('Map', () => {
         const { user } = setup('/bike');
 
         // When
-        await typeAndSelectGeocodeResult(
-          user,
-          'Start',
-          'quai',
-          "Quai de l'Hôtel de Ville"
-        );
-        await typeAndSelectGeocodeResult(
-          user,
-          'End',
-          'sant',
-          'Rue de la Santé'
-        );
+        await startItinerary(user);
+        await endItinerary(user);
 
         // Then
         expect(server.requests).toEqual(
