@@ -5,9 +5,7 @@ import { MapContainer } from 'react-leaflet';
 
 import RoutingControl from 'components/RoutingControl/RoutingControl';
 
-import * as routingResponse from './fakes/osrm-routing-response.json';
-import * as reverseEndResponse from './fakes/reverse-end-response.json';
-import * as reverseStartResponse from './fakes/reverse-start-response.json';
+import * as reverseResponse from './fakes/reverse-response.json';
 
 describe('RoutingControl', () => {
   let server;
@@ -15,41 +13,51 @@ describe('RoutingControl', () => {
   const setupFakeServer = () => {
     server = sinon.fakeServer.create();
 
-    server.respondWith('GET', /\/driving\//, [
+    server.respondWith('GET', /\/reverse\/\?lat=48.8554966&lon=2.3522295/, [
       200,
       { 'content-Type': 'application/json' },
-      JSON.stringify(routingResponse),
-    ]);
-
-    server.respondWith('GET', /\/reverse\/\?lat=48.01&lon=2.54/, [
-      200,
-      { 'content-Type': 'application/json' },
-      JSON.stringify(reverseStartResponse),
-    ]);
-
-    server.respondWith('GET', /\/reverse\/\?lat=48.02&lon=2.56/, [
-      200,
-      { 'content-Type': 'application/json' },
-      JSON.stringify(reverseEndResponse),
+      JSON.stringify(reverseResponse),
     ]);
   };
 
-  const setup = (waypoints) => {
+  const setupFakeGeolocationSuccess = () => {
+    navigator.geolocation = {
+      getCurrentPosition: (successCallback) => {
+        const position = {
+          coords: {
+            latitude: 48.8554966,
+            longitude: 2.3522295,
+            accuracy: 5,
+          },
+        };
+        successCallback(position);
+      },
+    };
+  };
+
+  const setup = () => {
     setupFakeServer();
 
     document.body.innerHTML = '';
+
+    setupFakeGeolocationSuccess();
 
     const geocoder = L.Control.Geocoder.photon({
       serviceUrl: `/api/`,
       reverseUrl: `/reverse/`,
     });
 
+    const geolocator = (map, callback) => {
+      map.on('locationfound', (e) => callback(e.latlng));
+      map.locate({ setView: true, maxZoom: 16 });
+    };
+
     const utils = render(
       <MapContainer center={[48.01, 2.55]} zoom={13} renderer={new L.SVG()}>
         <RoutingControl
           router={undefined}
           geocoder={geocoder}
-          waypoints={waypoints}
+          geolocator={geolocator}
         />
       </MapContainer>
     );
@@ -64,66 +72,33 @@ describe('RoutingControl', () => {
     sinon.restore();
   });
 
-  describe('when pass waypoints', () => {
-    const waypoints = [
-      [48.01, 2.54],
-      [48.02, 2.56],
-    ];
+  it('should geolocate start point', async () => {
+    setup();
 
-    it('should display start and end markers', () => {
-      setup(waypoints);
+    server.respond();
 
-      server.respond();
-
-      expect(screen.getByAltText('start way point')).toBeInTheDocument();
-      expect(screen.getByAltText('end way point')).toBeInTheDocument();
-    });
-
-    it('should reverse way points', async () => {
-      setup(waypoints);
-
-      server.respond();
-
-      await waitFor(() => {
-        expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
-          'Rue de la Santé, Paris, Île-de-France, France'
-        );
-      });
-      expect(screen.getByPlaceholderText('End')).toHaveDisplayValue(
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
         "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
       );
     });
+    expect(screen.getByAltText('Marker')).toBeInTheDocument();
 
-    it('should call geocooding (reverse) and routing services', () => {
-      setup(waypoints);
-
-      server.respond();
-
-      expect(server.requests).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            status: 200,
-            url: expect.stringMatching('lat=48.01&lon=2.54'),
-          }),
-          expect.objectContaining({
-            status: 200,
-            url: expect.stringMatching('lat=48.02&lon=2.56'),
-          }),
-          expect.objectContaining({
-            status: 200,
-            url: expect.stringMatching('2.54,48.01;2.56,48.02'),
-          }),
-        ])
-      );
-    });
+    expect(screen.getByPlaceholderText('End')).toHaveDisplayValue('');
   });
 
-  describe('when no waypoints', () => {
-    it('should display start and end placeholders with empty inputs', () => {
-      setup();
+  it('should call geocoding (reverse)', () => {
+    setup();
 
-      expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue('');
-      expect(screen.getByPlaceholderText('End')).toHaveDisplayValue('');
-    });
+    server.respond();
+
+    expect(server.requests).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          status: 200,
+          url: expect.stringMatching('lat=48.8554966&lon=2.3522295'),
+        }),
+      ])
+    );
   });
 });

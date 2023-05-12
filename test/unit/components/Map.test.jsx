@@ -6,11 +6,14 @@ import Map from 'components/Map/Map';
 
 import * as graphhopperRoutingResponse from './fakes/graphhopper-routing-response.json';
 import * as osrmRoutingResponse from './fakes/osrm-routing-response.json';
+import * as reverseResponse from './fakes/reverse-response.json';
 import * as searchEndResponse from './fakes/search-end-response.json';
 import * as searchStartResponse from './fakes/search-start-response.json';
 
 describe('Map', () => {
   let server;
+
+  const sandbox = sinon.createSandbox();
 
   const setupFakeServer = () => {
     server = sinon.fakeServer.create();
@@ -39,11 +42,38 @@ describe('Map', () => {
       { 'content-Type': 'application/json' },
       JSON.stringify(searchEndResponse),
     ]);
+
+    server.respondWith('GET', /\/reverse\/\?lat=48.8554966&lon=2.3522295/, [
+      200,
+      { 'content-Type': 'application/json' },
+      JSON.stringify(reverseResponse),
+    ]);
   };
 
-  const setup = (path) => {
-    setupFakeServer();
+  const setupFakeGeolocationSuccess = () => {
+    navigator.geolocation = {
+      getCurrentPosition: (successCallback) => {
+        const position = {
+          coords: {
+            latitude: 48.8554966,
+            longitude: 2.3522295,
+            accuracy: 5,
+          },
+        };
+        successCallback(position);
+      },
+    };
+  };
 
+  const setupFakeGeolocationError = () => {
+    navigator.geolocation = {
+      getCurrentPosition: (successCallback, errorCallback) => {
+        errorCallback(new Error('geolocation error'));
+      },
+    };
+  };
+
+  const setupMap = (path) => {
     document.body.innerHTML = '';
 
     const user = userEvent.setup();
@@ -57,34 +87,40 @@ describe('Map', () => {
     };
   };
 
+  beforeEach(() => {
+    setupFakeServer();
+    setupFakeGeolocationSuccess();
+  });
+
   afterEach(() => {
     server.restore();
+    sandbox.restore();
     sinon.restore();
   });
 
   describe('startup display', () => {
     it('should display zoom', () => {
-      setup();
+      setupMap();
 
       expect(screen.getByTitle('Zoom in')).toBeInTheDocument();
       expect(screen.getByTitle('Zoom out')).toBeInTheDocument();
     });
 
     it('should display attribution layer', () => {
-      setup();
+      setupMap();
 
       expect(screen.getByText('OpenStreetMap')).toBeInTheDocument();
     });
 
     it('should display start and end placeholders', () => {
-      setup();
+      setupMap();
 
       expect(screen.getByPlaceholderText('Start')).toBeInTheDocument();
       expect(screen.getByPlaceholderText('End')).toBeInTheDocument();
     });
   });
 
-  describe('user type itinerary', () => {
+  describe('itinerary', () => {
     const typeAndSelectGeocodeResult = async (
       user,
       placeholder,
@@ -107,17 +143,28 @@ describe('Map', () => {
     const endItinerary = (user) =>
       typeAndSelectGeocodeResult(user, 'End', 'sant', 'Rue de la Santé');
 
-    describe('osrm', () => {
-      it('should geocode inputs search and display route', async () => {
-        // Given
-        const { user } = setup();
+    const expectItineraryAndMarkers = async () => {
+      await waitFor(() => {
+        expect(
+          screen.getAllByText('You have arrived at your destination', {
+            exact: false,
+          })
+        ).toHaveLength(2); // 1 visible + 1 alternative
+      });
+      expect(screen.getAllByAltText('Marker')).toHaveLength(2);
+    };
 
-        // When
-        await startItinerary(user);
-        // Then display result instead of placeholder
-        expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
-          "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
-        );
+    describe('geolocate start, type end', () => {
+      it('should display route', async () => {
+        // Given
+        const { user } = setupMap();
+
+        // Display geolocation result instead of placeholder
+        await waitFor(() => {
+          expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
+            "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
+          );
+        });
 
         // When
         await endItinerary(user);
@@ -126,25 +173,19 @@ describe('Map', () => {
           'Rue de la Santé, Paris, Île-de-France, France'
         );
 
-        // And finally display itinerary and markers
-        await waitFor(() => {
-          expect(
-            screen.getAllByText('You have arrived at your destination', {
-              exact: false,
-            })
-          ).toHaveLength(2); // 1 visible + 1 alternative
-        });
-        expect(
-          screen.getAllByAltText('way point', { exact: false })
-        ).toHaveLength(2);
+        await expectItineraryAndMarkers();
       });
 
-      it('should call geocooding and routing services', async () => {
+      it('should call geocoding and routing services', async () => {
         // Given
-        const { user } = setup();
+        const { user } = setupMap();
 
         // When
-        await startItinerary(user);
+        await waitFor(() => {
+          expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
+            "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
+          );
+        });
         await endItinerary(user);
 
         // Then
@@ -152,7 +193,7 @@ describe('Map', () => {
           expect.arrayContaining([
             expect.objectContaining({
               status: 200,
-              url: expect.stringMatching('q=quai'),
+              url: expect.stringMatching('lat=48.8554966&lon=2.3522295'),
             }),
             expect.objectContaining({
               status: 200,
@@ -167,50 +208,105 @@ describe('Map', () => {
           ])
         );
       });
+
+      describe('geolocation error', () => {
+        it('should display alert', () => {
+          const spyAlert = sandbox.spy(window, 'alert');
+
+          setupFakeGeolocationError();
+          setupMap();
+
+          expect(spyAlert).toHaveBeenCalledWithMatch('geolocation error');
+        });
+      });
     });
 
-    describe('graphhopper', () => {
-      it('should geocode inputs search and display route', async () => {
-        // Given
-        const { user } = setup('/bike');
+    describe('type start and end', () => {
+      describe('osrm', () => {
+        it('should display route', async () => {
+          // Given
+          const { user } = setupMap();
 
-        // When
-        await startItinerary(user);
-        await endItinerary(user);
+          // When
+          await startItinerary(user);
+          // Then display result instead of placeholder
+          expect(screen.getByPlaceholderText('Start')).toHaveDisplayValue(
+            "Quai de l'Hôtel de Ville, Paris, Île-de-France, France"
+          );
 
-        // Then
-        await waitFor(() => {
-          expect(
-            screen.getAllByText('You have arrived at your destination', {
-              exact: false,
-            })
-          ).toHaveLength(2); // 1 visible + 1 alternative
+          // When
+          await endItinerary(user);
+          // Then display result instead of placeholder
+          expect(screen.getByPlaceholderText('End')).toHaveDisplayValue(
+            'Rue de la Santé, Paris, Île-de-France, France'
+          );
+
+          await expectItineraryAndMarkers();
         });
 
-        expect(
-          screen.getAllByAltText('way point', { exact: false })
-        ).toHaveLength(2);
+        it('should call geocoding and routing services', async () => {
+          // Given
+          const { user } = setupMap();
+
+          // When
+          await startItinerary(user);
+          await endItinerary(user);
+
+          // Then
+          expect(server.requests).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                status: 200,
+                url: expect.stringMatching('q=quai'),
+              }),
+              expect.objectContaining({
+                status: 200,
+                url: expect.stringMatching('q=sant'),
+              }),
+              expect.objectContaining({
+                status: 200,
+                url: expect.stringMatching(
+                  '2.3522295,48.8554966;2.3415773,48.8346507'
+                ),
+              }),
+            ])
+          );
+        });
       });
 
-      it('should call routing service', async () => {
-        // Given
-        const { user } = setup('/bike');
+      describe('graphhopper', () => {
+        it('should display route', async () => {
+          // Given
+          const { user } = setupMap('/bike');
 
-        // When
-        await startItinerary(user);
-        await endItinerary(user);
+          // When
+          await startItinerary(user);
+          await endItinerary(user);
 
-        // Then
-        expect(server.requests).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              status: 200,
-              url: expect.stringMatching(
-                'point=48.8554966,2.3522295&point=48.8346507,2.3415773'
-              ),
-            }),
-          ])
-        );
+          // Then
+          await expectItineraryAndMarkers();
+        });
+
+        it('should call routing service', async () => {
+          // Given
+          const { user } = setupMap('/bike');
+
+          // When
+          await startItinerary(user);
+          await endItinerary(user);
+
+          // Then
+          expect(server.requests).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                status: 200,
+                url: expect.stringMatching(
+                  'point=48.8554966,2.3522295&point=48.8346507,2.3415773'
+                ),
+              }),
+            ])
+          );
+        });
       });
     });
   });

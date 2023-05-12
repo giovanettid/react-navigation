@@ -7,6 +7,13 @@ import RoutingControl from 'components/RoutingControl/RoutingControl';
 
 import './Map.scss';
 
+const geolocator = (map, controlCallback) => {
+  map.on('locationfound', (e) => controlCallback(e.latlng));
+  map.on('locationerror', (e) => alert(e.message));
+
+  map.locate({ setView: true, maxZoom: 16 });
+};
+
 function Map({ configuration }) {
   const [state] = useState(configuration());
 
@@ -20,7 +27,11 @@ function Map({ configuration }) {
       scrollWheelZoom={false}
     >
       <TileLayer url={layer.url} attribution={layer.attribution} />
-      <RoutingControl router={control.router} geocoder={control.geocoder} />
+      <RoutingControl
+        router={control.router}
+        geocoder={control.geocoder}
+        geolocator={geolocator}
+      />
     </MapContainer>
   );
 }
