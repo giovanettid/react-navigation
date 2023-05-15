@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 
+import Geolocator from 'components/Geolocator/Geolocator';
 import RoutingControl from 'components/RoutingControl/RoutingControl';
 
 import './Map.scss';
@@ -20,7 +21,11 @@ function Map({ configuration }) {
       scrollWheelZoom={false}
     >
       <TileLayer url={layer.url} attribution={layer.attribution} />
-      <RoutingControl router={control.router} geocoder={control.geocoder} />
+      <RoutingControl
+        router={control.router}
+        geocoder={control.geocoder}
+        geolocator={Geolocator(control.maxZoom)}
+      />
     </MapContainer>
   );
 }

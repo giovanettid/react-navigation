@@ -1,22 +1,20 @@
 import { createControlComponent } from '@react-leaflet/core';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import { useMap } from 'react-leaflet';
 
-const createRoutineMachineControl = ({ router, geocoder, waypoints }) => {
-  const createMarker = (i, waypoint) =>
-    L.marker(waypoint.latLng, {
-      alt: `${i === 0 ? 'start' : 'end'} way point`,
-    });
-
-  return L.Routing.control({
+const CreateRoutineMachineControl = ({ router, geocoder, geolocator }) => {
+  const control = L.Routing.control({
     serviceUrl: '',
     router,
-    waypoints,
     geocoder,
-    createMarker,
   });
+
+  geolocator(useMap(), (latlng) => control.setWaypoints(latlng));
+
+  return control;
 };
 
-const RoutingControl = createControlComponent(createRoutineMachineControl);
+const RoutingControl = createControlComponent(CreateRoutineMachineControl);
 
 export default RoutingControl;

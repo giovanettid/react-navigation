@@ -18,6 +18,10 @@ module.exports = {
   },
   rules: {
     'no-unused-expressions': 'off',
+    'jest/expect-expect': [
+      'error',
+      { assertFunctionNames: ['expect', 'expectItineraryAndMarkers'] },
+    ],
   },
   plugins: ['jest', 'testing-library', 'jest-dom'],
 };

@@ -6,14 +6,16 @@ module.exports = {
     'prettier',
   ],
   globals: {
-    window: true,
+    window: false,
     navigator: true,
     self: true,
     document: false,
+    alert: false,
   },
   rules: {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+    'no-alert': 'off',
     'prettier/prettier': 'error',
   },
   plugins: ['react-hooks', 'jsx-a11y', 'prettier'],

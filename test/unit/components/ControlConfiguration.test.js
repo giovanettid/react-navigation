@@ -32,6 +32,10 @@ describe('ControlConfiguration', () => {
       });
     });
 
+    it('property maxZoom is 16 (for geolocation)', () => {
+      expect(configuration.maxZoom).toBe(16);
+    });
+
     it('property geocoder is instance of Photon', () => {
       expect(configuration.geocoder).toBeInstanceOf(L.Control.Geocoder.Photon);
     });
