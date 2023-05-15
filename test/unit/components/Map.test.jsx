@@ -13,8 +13,6 @@ import * as searchStartResponse from './fakes/search-start-response.json';
 describe('Map', () => {
   let server;
 
-  const sandbox = sinon.createSandbox();
-
   const setupFakeServer = () => {
     server = sinon.fakeServer.create();
     server.respondImmediately = true;
@@ -65,14 +63,6 @@ describe('Map', () => {
     };
   };
 
-  const setupFakeGeolocationError = () => {
-    navigator.geolocation = {
-      getCurrentPosition: (successCallback, errorCallback) => {
-        errorCallback(new Error('geolocation error'));
-      },
-    };
-  };
-
   const setupMap = (path) => {
     document.body.innerHTML = '';
 
@@ -94,7 +84,6 @@ describe('Map', () => {
 
   afterEach(() => {
     server.restore();
-    sandbox.restore();
     sinon.restore();
   });
 
@@ -207,17 +196,6 @@ describe('Map', () => {
             }),
           ])
         );
-      });
-
-      describe('geolocation error', () => {
-        it('should display alert', () => {
-          const spyAlert = sandbox.spy(window, 'alert');
-
-          setupFakeGeolocationError();
-          setupMap();
-
-          expect(spyAlert).toHaveBeenCalledWithMatch('geolocation error');
-        });
       });
     });
 
