@@ -3,31 +3,13 @@ import { MapContainer, useMap } from 'react-leaflet';
 
 import Geolocator from 'components/Geolocator/Geolocator';
 
+import {
+  setupFakeGeolocationSuccess,
+  setupFakeGeolocationError,
+} from './fakes/geolocation';
+
 describe('Geolocator', () => {
   const sandbox = sinon.createSandbox();
-
-  const setupFakeGeolocationSuccess = () => {
-    navigator.geolocation = {
-      getCurrentPosition: (successCallback) => {
-        const position = {
-          coords: {
-            latitude: 48.8554966,
-            longitude: 2.3522295,
-            accuracy: 5,
-          },
-        };
-        successCallback(position);
-      },
-    };
-  };
-
-  const setupFakeGeolocationError = () => {
-    navigator.geolocation = {
-      getCurrentPosition: (successCallback, errorCallback) => {
-        errorCallback(new Error('geolocation error'));
-      },
-    };
-  };
 
   const DummyComponent = ({ geolocator, controlCallback }) => {
     const map = useMap();

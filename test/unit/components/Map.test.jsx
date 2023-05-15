@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import MapConfiguration from 'components/Map/Configuration/MapConfiguration';
 import Map from 'components/Map/Map';
 
+import { setupFakeGeolocationSuccess } from './fakes/geolocation';
 import * as graphhopperRoutingResponse from './fakes/graphhopper-routing-response.json';
 import * as osrmRoutingResponse from './fakes/osrm-routing-response.json';
 import * as reverseResponse from './fakes/reverse-response.json';
@@ -46,21 +47,6 @@ describe('Map', () => {
       { 'content-Type': 'application/json' },
       JSON.stringify(reverseResponse),
     ]);
-  };
-
-  const setupFakeGeolocationSuccess = () => {
-    navigator.geolocation = {
-      getCurrentPosition: (successCallback) => {
-        const position = {
-          coords: {
-            latitude: 48.8554966,
-            longitude: 2.3522295,
-            accuracy: 5,
-          },
-        };
-        successCallback(position);
-      },
-    };
   };
 
   const setupMap = (path) => {

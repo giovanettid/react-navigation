@@ -5,6 +5,7 @@ import { MapContainer } from 'react-leaflet';
 
 import RoutingControl from 'components/RoutingControl/RoutingControl';
 
+import { setupFakeGeolocationSuccess } from './fakes/geolocation';
 import * as reverseResponse from './fakes/reverse-response.json';
 
 describe('RoutingControl', () => {
@@ -18,21 +19,6 @@ describe('RoutingControl', () => {
       { 'content-Type': 'application/json' },
       JSON.stringify(reverseResponse),
     ]);
-  };
-
-  const setupFakeGeolocationSuccess = () => {
-    navigator.geolocation = {
-      getCurrentPosition: (successCallback) => {
-        const position = {
-          coords: {
-            latitude: 48.8554966,
-            longitude: 2.3522295,
-            accuracy: 5,
-          },
-        };
-        successCallback(position);
-      },
-    };
   };
 
   const setup = () => {
